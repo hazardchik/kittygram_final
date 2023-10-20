@@ -2,18 +2,16 @@
 import os
 from pathlib import Path
 
-from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
 
 load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', get_random_secret_key())
+SECRET_KEY = os.getenv('SECRET_KEY', default='token')
 
-DEBUG = os.getenv('DEBUG', False) == True
+DEBUG = os.getenv('DEBUG', default=False)
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='127.0.0.1, localhost').split(', ')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -104,13 +102,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'collected_static'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated', 
+        'rest_framework.permissions.IsAuthenticated',
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -121,3 +119,4 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 
 }
+
